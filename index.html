@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro - Prospera Rio</title>
   
-  
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -173,6 +172,13 @@
                   <option value="1005 - Autonomo">1005 - Autônomo</option>
                 </select>
               </div>
+              <div class="form-group">
+                <label>Bolsa Família?</label>
+                <select id="bolsaFamilia" name="bolsaFamilia" class="form-control">
+                  <option value="Não">Não</option>
+                  <option value="Sim">Sim</option>
+                </select>
+              </div>
             </div>
           </section>
         </div>
@@ -332,14 +338,12 @@
               <option value="Consultoria de Como Fidelizar Clientes">Consultoria de Como Fidelizar Clientes</option>
               <option value="Consultoria de Estudo de Caso da Lacoste">Consultoria de Estudo de Caso da Lacoste</option>
               <option value="Consultoria em Estrategias de Crescimento">Consultoria em Estratégias de Crescimento</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Bolsa Família? <span class="required">*</span></label>
-            <select id="bolsaFamiliaEvento" name="bolsaFamiliaEvento" class="form-control" required>
-              <option value="">Selecione...</option>
-              <option value="Sim">Sim</option>
-              <option value="Não">Não</option>
+              <option value="Oficina de WhatsApp e Automacao">Oficina de WhatsApp e Automação</option>
+              <option value="Oficina de IA para Empreendedores">Oficina de IA para Empreendedores</option>
+              <option value="Oficina de Google Meu Negocio">Oficina de Google Meu Negócio</option>
+              <option value="Oficina de Shopee e Mercado Livre">Oficina de Shopee e Mercado Livre</option>
+              <option value="Oficina de Instagram para Vendas">Oficina de Instagram para Vendas</option>
+              <option value="Oficina de TikTok para Negocios">Oficina de TikTok para Negócios</option>
             </select>
           </div>
         </section>
@@ -439,7 +443,7 @@
       let valido = true;
       
       // Campos comuns obrigatórios
-      const camposComuns = ['data', 'horarioInicio', 'horarioFim', 'logradouro', 'numero', 'bairro', 'cep', 'ddd', 'telefone', 'email', 'evento', 'bolsaFamiliaEvento'];
+      const camposComuns = ['data', 'horarioInicio', 'horarioFim', 'logradouro', 'numero', 'bairro', 'cep', 'ddd', 'telefone', 'email', 'evento'];
       
       camposComuns.forEach(id => {
         const campo = document.querySelector(`[name="${id}"]`) || document.getElementById(id);
@@ -501,9 +505,6 @@
       if (data.tipoPessoa === 'pf') {
         data.nomePF = data.nomePF || '';
         data.nascimentoPF = data.nascimentoPF || '';
-        data.bolsaFamilia = data.bolsaFamiliaEvento;
-      } else {
-        data.bolsaFamilia = data.bolsaFamiliaEvento;
       }
 
       const form = document.createElement('form');
@@ -518,7 +519,7 @@
       form.target = 'h_iframe';
       document.body.appendChild(form);
       form.submit();
-
+      
       setTimeout(() => {
         document.getElementById('modalSucesso').style.display = 'flex';
         btn.disabled = false; btn.textContent = 'Finalizar Cadastro';
