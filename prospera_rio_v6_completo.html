@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro - Prospera Rio</title>
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --azul-principal: #092040;
+      --azul-secundaria: #00B7D7;
+      --amarelo-acento: #ECC203;
+      --cinza-neutro: #EFF1F3;
+      --azul-escuro: #021738;
+      --branco: #FFFFFF;
+      --verde-sucesso: #34A853;
+      --vermelho-erro: #EA4335;
+      --font-titulo: 'Montserrat', sans-serif;
+      --font-corpo: 'Open Sans', sans-serif;
+      --sombra-card: 0 8px 32px rgba(9, 32, 64, 0.15);
+      --transicao: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-corpo);
+      background: linear-gradient(135deg, var(--azul-principal) 0%, var(--azul-escuro) 100%);
+      min-height: 100vh;
+      color: var(--azul-escuro);
+      line-height: 1.6;
+    }
+    body::before {
+      content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background-image: radial-gradient(circle at 20% 80%, rgba(0, 183, 215, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(236, 194, 3, 0.08) 0%, transparent 50%);
+      pointer-events: none; z-index: 0;
+    }
+    .container { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 20px; }
+    .header { text-align: center; padding: 40px 20px; }
+    .logo { max-width: 280px; height: auto; filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3)); }
+    .location-text { color: var(--amarelo-acento); font-family: var(--font-titulo); font-weight: 700; font-size: 18px; margin-top: 16px; letter-spacing: 3px; }
+    
+    .form-card { background: var(--branco); border-radius: 24px; box-shadow: var(--sombra-card); overflow: hidden; }
+    .form-header { background: linear-gradient(135deg, var(--azul-principal) 0%, var(--azul-escuro) 100%); padding: 32px; text-align: center; color: white; }
+    .form-header h1 { font-family: var(--font-titulo); font-size: 28px; margin-bottom: 8px; }
+    .form-body { padding: 40px; }
+    
+    .form-section { margin-bottom: 32px; padding-bottom: 32px; border-bottom: 2px solid var(--cinza-neutro); }
+    .section-title { font-family: var(--font-titulo); font-weight: 700; font-size: 16px; color: var(--azul-principal); margin-bottom: 20px; display: flex; align-items: center; gap: 12px; text-transform: uppercase; }
+    .section-title::before { content: ''; width: 4px; height: 24px; background: linear-gradient(180deg, var(--azul-secundaria), var(--amarelo-acento)); border-radius: 2px; }
+    
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .form-grid-full { grid-column: 1 / -1; }
+    .form-group label { display: block; font-family: var(--font-titulo); font-weight: 600; font-size: 12px; margin-bottom: 8px; text-transform: uppercase; }
+    .required { color: var(--vermelho-erro); }
+    
+    .form-control { width: 100%; padding: 12px 14px; font-size: 14px; background: var(--cinza-neutro); border: 2px solid transparent; border-radius: 10px; outline: none; transition: var(--transicao); }
+    .form-control:focus { background: var(--branco); border-color: var(--azul-secundaria); box-shadow: 0 0 0 4px rgba(0, 183, 215, 0.15); }
+    
+    .input-with-btn { display: flex; gap: 10px; }
+    .btn-search { background: var(--amarelo-acento); color: var(--azul-principal); border: none; border-radius: 10px; padding: 0 20px; font-weight: 700; cursor: pointer; font-size: 12px; text-transform: uppercase; transition: var(--transicao); min-width: 100px; }
+    .btn-search:hover { background: #d4af02; }
+
+    .tipo-pessoa-container { display: flex; gap: 16px; margin-bottom: 24px; }
+    .tipo-pessoa-btn { flex: 1; padding: 16px; font-family: var(--font-titulo); font-weight: 600; border-radius: 12px; cursor: pointer; border: none; background: var(--cinza-neutro); transition: var(--transicao); }
+    .tipo-pessoa-btn.active { background: var(--azul-secundaria); color: white; }
+    
+    .campos-pf, .campos-pj { display: none; }
+    .campos-pf.active, .campos-pj.active { display: block; }
+    
+    .alert-busca { padding: 12px; border-radius: 10px; margin-bottom: 20px; font-size: 13px; font-weight: 600; display: none; }
+    .alert-busca.success { background: #e6f4ea; color: #1e7e34; display: flex; }
+    .alert-busca.loading { background: #e8f0fe; color: #1967d2; display: flex; }
+    
+    .btn-submit { width: 100%; padding: 18px; background: var(--azul-secundaria); color: white; border: none; border-radius: 12px; font-family: var(--font-titulo); font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; }
+    .btn-submit:disabled { opacity: 0.7; }
+
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(9, 32, 64, 0.8); display: none; align-items: center; justify-content: center; z-index: 1000; }
+    .modal-content { background: white; border-radius: 24px; padding: 40px; text-align: center; max-width: 400px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <img class="logo" src="https://lh3.googleusercontent.com/d/1x5sNkC9vd7CI78y0xdkWvgoadxPEMcIf=w800" alt="Prospera Rio" />
+      <div class="location-text">MARE . JACAREZINHO</div>
+    </header>
+
+    <main class="form-card">
+      <div class="form-header">
+        <h1>Formulário de Cadastro</h1>
+        <p>Preencha os dados completos para a planilha</p>
+      </div>
+
+      <form id="formCadastro" class="form-body">
+        <!-- TIPO DE CADASTRO -->
+        <section class="form-section">
+          <h2 class="section-title">Tipo de Cadastro</h2>
+          <div class="tipo-pessoa-container">
+            <button type="button" class="tipo-pessoa-btn active" data-tipo="pf" id="btnPF">Pessoa Física</button>
+            <button type="button" class="tipo-pessoa-btn" data-tipo="pj" id="btnPJ">Pessoa Jurídica</button>
+          </div>
+          <input type="hidden" id="tipoPessoa" name="tipoPessoa" value="pf" />
+        </section>
+
+        <!-- ATENDIMENTO -->
+        <section class="form-section">
+          <h2 class="section-title">Atendimento</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Data <span class="required">*</span></label>
+              <input type="date" name="data" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label>Início <span class="required">*</span></label>
+              <input type="time" name="horarioInicio" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label>Fim <span class="required">*</span></label>
+              <input type="time" name="horarioFim" class="form-control" required />
+            </div>
+          </div>
+        </section>
+
+        <!-- PESSOA FISICA -->
+        <div class="campos-pf active" id="camposPF">
+          <div id="alertaBuscaPF" class="alert-busca"></div>
+          <section class="form-section">
+            <h2 class="section-title">Dados Pessoais</h2>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>CPF <span class="required">*</span></label>
+                <div class="input-with-btn">
+                  <input type="text" id="cpf" name="cpf" class="form-control" placeholder="000.000.000-00" maxlength="14" />
+                  <button type="button" class="btn-search" id="btnBuscarPF">BUSCAR</button>
+                </div>
+              </div>
+              <div class="form-group form-grid-full">
+                <label>Nome Completo <span class="required">*</span></label>
+                <input type="text" id="nomePF" name="nomePF" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Sexo <span class="required">*</span></label>
+                <select id="sexo" name="sexo" class="form-control">
+                  <option value="">Selecione...</option>
+                  <option value="F">F - Feminino</option>
+                  <option value="M">M - Masculino</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Nascimento <span class="required">*</span></label>
+                <input type="date" id="nascimentoPF" name="nascimentoPF" class="form-control" />
+              </div>
+              <div class="form-group form-grid-full">
+                <label>Ocupação <span class="required">*</span></label>
+                <select id="ocupacao" name="ocupacao" class="form-control">
+                  <option value="">Selecione...</option>
+                  <option value="1000 - Nao possui">1000 - Não possui</option>
+                  <option value="1001 - Negocio informal (sem CNPJ)">1001 - Negócio informal (sem CNPJ)</option>
+                  <option value="1002 - Atividade Rural">1002 - Atividade Rural</option>
+                  <option value="1003 - Ambulante">1003 - Ambulante</option>
+                  <option value="1004 - Artesao">1004 - Artesão</option>
+                  <option value="1005 - Autonomo">1005 - Autônomo</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Bolsa Família?</label>
+                <select id="bolsaFamilia" name="bolsaFamilia" class="form-control">
+                  <option value="Não">Não</option>
+                  <option value="Sim">Sim</option>
+                </select>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- PESSOA JURIDICA -->
+        <div class="campos-pj" id="camposPJ">
+          <div id="alertaBuscaPJ" class="alert-busca"></div>
+          <section class="form-section">
+            <h2 class="section-title">Dados da Empresa</h2>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>CNPJ <span class="required">*</span></label>
+                <div class="input-with-btn">
+                  <input type="text" id="cnpj" name="cnpj" class="form-control" placeholder="00.000.000/0000-00" maxlength="18" />
+                  <button type="button" class="btn-search" id="btnBuscarPJ">BUSCAR</button>
+                </div>
+              </div>
+              <div class="form-group form-grid-full">
+                <label>Razão Social <span class="required">*</span></label>
+                <input type="text" id="razaoSocial" name="razaoSocial" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Data de Fundação</label>
+                <input type="date" id="dataFundacao" name="dataFundacao" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Classificação</label>
+                <select id="classificacao" name="classificacao" class="form-control">
+                  <option value="MEI">MEI</option>
+                  <option value="ME">ME</option>
+                  <option value="EPP">EPP</option>
+                  <option value="Outros">Outros</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>CNAE</label>
+                <input type="text" id="cnae" name="cnae" class="form-control" placeholder="Somente números" maxlength="7" />
+              </div>
+            </div>
+          </section>
+
+          <section class="form-section">
+            <h2 class="section-title">Dados do Contato/Sócio</h2>
+            <div class="form-grid">
+              <div class="form-group">
+                <label>CPF do Contato</label>
+                <input type="text" id="cpfContato" name="cpfContato" class="form-control" maxlength="14" />
+              </div>
+              <div class="form-group form-grid-full">
+                <label>Nome do Contato</label>
+                <input type="text" id="nomeContato" name="nomeContato" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Cargo</label>
+                <input type="text" id="cargoContato" name="cargoContato" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Nascimento</label>
+                <input type="date" id="nascimentoContato" name="nascimentoContato" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label>Sexo</label>
+                <select id="sexoContato" name="sexoContato" class="form-control">
+                  <option value="">Selecione...</option>
+                  <option value="F">F - Feminino</option>
+                  <option value="M">M - Masculino</option>
+                </select>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <!-- ENDERECO -->
+        <section class="form-section">
+          <h2 class="section-title">Endereço</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Tipo Logradouro</label>
+              <select id="tipoLogradouro" name="tipoLogradouro" class="form-control">
+                <option value="Rua">Rua</option>
+                <option value="Avenida">Avenida</option>
+                <option value="Travessa">Travessa</option>
+                <option value="Beco">Beco</option>
+                <option value="Praca">Praça</option>
+                <option value="Estrada">Estrada</option>
+              </select>
+            </div>
+            <div class="form-group form-grid-full">
+              <label>Logradouro <span class="required">*</span></label>
+              <input type="text" id="logradouro" name="logradouro" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label>Número <span class="required">*</span></label>
+              <input type="text" id="numero" name="numero" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label>Complemento</label>
+              <input type="text" id="complementoEndereco" name="complementoEndereco" class="form-control" />
+            </div>
+            <div class="form-group">
+              <label>Bairro <span class="required">*</span></label>
+              <select id="bairro" name="bairro" class="form-control">
+                <option value="">Selecione...</option>
+                <option value="Jacarezinho">Jacarezinho</option>
+                <option value="Mare">Maré</option>
+                <option value="Outro">Outro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>CEP</label>
+              <input type="text" id="cep" name="cep" class="form-control" maxlength="9" />
+            </div>
+          </div>
+        </section>
+
+        <!-- CONTATO -->
+        <section class="form-section">
+          <h2 class="section-title">Contato</h2>
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Telefone <span class="required">*</span></label>
+              <div style="display: flex; gap: 10px;">
+                <input type="text" id="ddd" name="ddd" class="form-control" style="width: 60px;" value="21" maxlength="2" />
+                <input type="text" id="telefone" name="telefone" class="form-control" placeholder="999999999" maxlength="9" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label>E-mail <span class="required">*</span></label>
+              <input type="email" id="email" name="email" class="form-control" />
+            </div>
+          </div>
+        </section>
+
+        <!-- EVENTO -->
+        <section class="form-section">
+          <h2 class="section-title">Evento / Consultoria</h2>
+          <div class="form-group">
+            <label>Evento <span class="required">*</span></label>
+            <select name="evento" class="form-control" required>
+              <option value="">Selecione...</option>
+              <option value="Consultoria em Diagnostico Empresarial">Consultoria em Diagnóstico Empresarial</option>
+              <option value="Consultoria em Precificacao">Consultoria em Precificação</option>
+              <option value="Consultoria de Como Fazer o Instagram">Consultoria de Como Fazer o Instagram</option>
+              <option value="Consultoria de Cadastro no TikTok">Consultoria de Cadastro no TikTok</option>
+              <option value="Consultoria de Sistema de Caixa">Consultoria de Sistema de Caixa</option>
+              <option value="Consultoria de Controle de Estoques">Consultoria de Controle de Estoques</option>
+              <option value="Consultoria de Entrega de Relatorios">Consultoria de Entrega de Relatórios</option>
+              <option value="Consultoria de Como Vender Mais">Consultoria de Como Vender Mais</option>
+              <option value="Consultoria de Como Lucrar Mais">Consultoria de Como Lucrar Mais</option>
+              <option value="Consultoria de Instalacao de Cadastro de Lojas na Shopee">Consultoria de Instalação de Cadastro de Lojas na Shopee</option>
+              <option value="Consultoria de Cadastro no Google Meu Negocio">Consultoria de Cadastro no Google Meu Negócio</option>
+              <option value="Consultoria de Cadastro no Mercado Livre">Consultoria de Cadastro no Mercado Livre</option>
+              <option value="Consultoria de Como Gerir Melhor Seu Negocio">Consultoria de Como Gerir Melhor Seu Negócio</option>
+              <option value="Consultoria de Coloque Seu Negocio nas Redes Sociais">Consultoria de Coloque Seu Negócio nas Redes Sociais</option>
+              <option value="Consultoria de Como Digitalizar Seu Negocio">Consultoria de Como Digitalizar Seu Negócio</option>
+              <option value="Consultoria de Como Vender Mais pelo TikTok">Consultoria de Como Vender Mais pelo TikTok</option>
+              <option value="Consultoria de Como Fidelizar Clientes">Consultoria de Como Fidelizar Clientes</option>
+              <option value="Consultoria de Estudo de Caso da Lacoste">Consultoria de Estudo de Caso da Lacoste</option>
+              <option value="Consultoria em Estrategias de Crescimento">Consultoria em Estratégias de Crescimento</option>
+            </select>
+          </div>
+        </section>
+
+        <button type="submit" id="btnSubmit" class="btn-submit">Finalizar Cadastro</button>
+      </form>
+    </main>
+  </div>
+
+  <div id="modalSucesso" class="modal-overlay">
+    <div class="modal-content">
+      <h2>Sucesso!</h2>
+      <p>Dados salvos na planilha.</p>
+      <button onclick="window.location.reload()" class="btn-submit" style="margin-top: 20px;">Novo Cadastro</button>
+    </div>
+  </div>
+
+  <script>
+    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwk_UNwCcncFqI6P8TLKO2m68wvujl_DXRnCt4i3n-kdHV_qh7FlOBDQc4mL6qbiYDq/exec';
+
+    // Alternar PF/PJ
+    document.getElementById('btnPF').onclick = () => {
+      document.getElementById('btnPF').classList.add('active');
+      document.getElementById('btnPJ').classList.remove('active');
+      document.getElementById('camposPF').classList.add('active');
+      document.getElementById('camposPJ').classList.remove('active');
+      document.getElementById('tipoPessoa').value = 'pf';
+    };
+    document.getElementById('btnPJ').onclick = () => {
+      document.getElementById('btnPJ').classList.add('active');
+      document.getElementById('btnPF').classList.remove('active');
+      document.getElementById('camposPJ').classList.add('active');
+      document.getElementById('camposPF').classList.remove('active');
+      document.getElementById('tipoPessoa').value = 'pj';
+    };
+
+    // Busca Automática (JSONP)
+    async function realizarBusca(doc, tipo) {
+      if(!doc) { alert('Digite um CPF ou CNPJ para buscar'); return; }
+      const alerta = document.getElementById(tipo === 'pf' ? 'alertaBuscaPF' : 'alertaBuscaPJ');
+      alerta.textContent = 'Buscando...'; alerta.className = 'alert-busca loading'; alerta.style.display = 'flex';
+      
+      const callbackName = 'cb_' + Date.now();
+      window[callbackName] = (r) => {
+        if (r.success) {
+          alerta.textContent = 'Encontrado!'; alerta.className = 'alert-busca success';
+          const d = r.dados;
+          if (tipo === 'pf') {
+            document.getElementById('nomePF').value = d.nome || '';
+            document.getElementById('sexo').value = d.sexo || '';
+            document.getElementById('nascimentoPF').value = d.nascimento || '';
+            document.getElementById('ocupacao').value = d.ocupacao || '';
+            document.getElementById('bolsaFamilia').value = d.bolsaFamilia || 'Não';
+          } else {
+            document.getElementById('razaoSocial').value = d.razaoSocial || d.nome || '';
+            document.getElementById('dataFundacao').value = d.dataFundacao || '';
+            document.getElementById('classificacao').value = d.classificacao || '';
+            document.getElementById('cnae').value = d.cnae || '';
+            document.getElementById('cpfContato').value = d.cpfContato || '';
+            document.getElementById('nomeContato').value = d.nomeContato || '';
+            document.getElementById('cargoContato').value = d.cargoContato || '';
+            document.getElementById('nascimentoContato').value = d.nascimentoContato || '';
+            document.getElementById('sexoContato').value = d.sexoContato || '';
+          }
+          document.getElementById('tipoLogradouro').value = d.tipoLogradouro || 'Rua';
+          document.getElementById('logradouro').value = d.logradouro || '';
+          document.getElementById('numero').value = d.numero || '';
+          document.getElementById('complementoEndereco').value = d.complementoEndereco || '';
+          document.getElementById('bairro').value = d.bairro || '';
+          document.getElementById('cep').value = d.cep || '';
+          document.getElementById('ddd').value = d.ddd || '21';
+          document.getElementById('telefone').value = d.telefone || '';
+          document.getElementById('email').value = d.email || '';
+        } else { 
+          alerta.textContent = 'Cadastro não encontrado.'; alerta.className = 'alert-busca loading';
+          setTimeout(() => { alerta.style.display = 'none'; }, 3000);
+        }
+        delete window[callbackName];
+      };
+      const s = document.createElement('script');
+      s.src = `${WEBAPP_URL}?acao=buscar&documento=${doc.replace(/\D/g,'')}&tipo=${tipo}&callback=${callbackName}`;
+      document.body.appendChild(s);
+    }
+
+    document.getElementById('btnBuscarPF').onclick = () => realizarBusca(document.getElementById('cpf').value, 'pf');
+    document.getElementById('btnBuscarPJ').onclick = () => realizarBusca(document.getElementById('cnpj').value, 'pj');
+
+    // Envio (Iframe Trick para evitar CORS)
+    document.getElementById('formCadastro').onsubmit = function(e) {
+      e.preventDefault();
+      const btn = document.getElementById('btnSubmit');
+      btn.disabled = true; btn.textContent = 'Enviando...';
+
+      const formData = new FormData(e.target);
+      const data = Object.fromEntries(formData.entries());
+      
+      // Ajuste de nomes para bater com o Script
+      if (data.tipoPessoa === 'pf') {
+        data.nome = data.nomePF;
+        data.nascimento = data.nascimentoPF;
+      }
+
+      const form = document.createElement('form');
+      form.method = 'POST'; form.action = WEBAPP_URL; form.style.display = 'none';
+      const input = document.createElement('input');
+      input.name = 'postData'; input.value = JSON.stringify(data);
+      form.appendChild(input);
+
+      const iframe = document.createElement('iframe');
+      iframe.name = 'h_iframe'; iframe.style.display = 'none';
+      document.body.appendChild(iframe);
+      form.target = 'h_iframe';
+      document.body.appendChild(form);
+      form.submit();
+
+      setTimeout(() => {
+        document.getElementById('modalSucesso').style.display = 'flex';
+        btn.disabled = false; btn.textContent = 'Finalizar Cadastro';
+      }, 3000);
+    };
+  </script>
+</body>
+</html>
