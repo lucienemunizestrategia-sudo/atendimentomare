@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cadastro - Prospera Rio</title>
+  <title>Cadastro - Prospera Rio Maré</title>
   
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,7 +64,7 @@
     
     .input-with-btn { display: flex; gap: 10px; }
     .btn-search { background: var(--amarelo-acento); color: var(--azul-principal); border: none; border-radius: 10px; padding: 0 20px; font-weight: 700; cursor: pointer; font-size: 12px; text-transform: uppercase; transition: var(--transicao); min-width: 100px; }
-    .btn-search:hover { background: #d4af02; }
+    .btn-search:hover { background: #d4af02; transform: translateY(-1px); }
 
     .tipo-pessoa-container { display: flex; gap: 16px; margin-bottom: 24px; }
     .tipo-pessoa-btn { flex: 1; padding: 16px; font-family: var(--font-titulo); font-weight: 600; border-radius: 12px; cursor: pointer; border: none; background: var(--cinza-neutro); transition: var(--transicao); }
@@ -93,7 +93,7 @@
 
     <main class="form-card">
       <div class="form-header">
-        <h1>Formulário de Cadastro</h1>
+        <h1>Formulário de Cadastro Maré</h1>
         <p>Preencha os dados completos para a planilha</p>
       </div>
 
@@ -136,17 +136,17 @@
               <div class="form-group">
                 <label>CPF <span class="required">*</span></label>
                 <div class="input-with-btn">
-                  <input type="text" id="cpf" name="cpf" class="form-control" placeholder="000.000.000-00" maxlength="14" />
+                  <input type="text" id="cpf" name="cpf" class="form-control" placeholder="000.000.000-00" maxlength="14" required />
                   <button type="button" class="btn-search" id="btnBuscarPF">BUSCAR</button>
                 </div>
               </div>
               <div class="form-group form-grid-full">
                 <label>Nome Completo <span class="required">*</span></label>
-                <input type="text" id="nomePF" name="nomePF" class="form-control" />
+                <input type="text" id="nomePF" name="nomePF" class="form-control" required />
               </div>
               <div class="form-group">
                 <label>Sexo <span class="required">*</span></label>
-                <select id="sexo" name="sexo" class="form-control">
+                <select id="sexo" name="sexo" class="form-control" required>
                   <option value="">Selecione...</option>
                   <option value="F">F - Feminino</option>
                   <option value="M">M - Masculino</option>
@@ -154,11 +154,11 @@
               </div>
               <div class="form-group">
                 <label>Nascimento <span class="required">*</span></label>
-                <input type="date" id="nascimentoPF" name="nascimentoPF" class="form-control" />
+                <input type="date" id="nascimentoPF" name="nascimentoPF" class="form-control" required />
               </div>
               <div class="form-group form-grid-full">
                 <label>Ocupação <span class="required">*</span></label>
-                <select id="ocupacao" name="ocupacao" class="form-control">
+                <select id="ocupacao" name="ocupacao" class="form-control" required>
                   <option value="">Selecione...</option>
                   <option value="1000 - Nao possui">1000 - Não possui</option>
                   <option value="1001 - Negocio informal (sem CNPJ)">1001 - Negócio informal (sem CNPJ)</option>
@@ -188,13 +188,13 @@
               <div class="form-group">
                 <label>CNPJ <span class="required">*</span></label>
                 <div class="input-with-btn">
-                  <input type="text" id="cnpj" name="cnpj" class="form-control" placeholder="00.000.000/0000-00" maxlength="18" />
+                  <input type="text" id="cnpj" name="cnpj" class="form-control" placeholder="00.000.000/0000-00" maxlength="18" required />
                   <button type="button" class="btn-search" id="btnBuscarPJ">BUSCAR</button>
                 </div>
               </div>
               <div class="form-group form-grid-full">
                 <label>Razão Social <span class="required">*</span></label>
-                <input type="text" id="razaoSocial" name="razaoSocial" class="form-control" />
+                <input type="text" id="razaoSocial" name="razaoSocial" class="form-control" required />
               </div>
               <div class="form-group">
                 <label>Data de Fundação</label>
@@ -264,11 +264,11 @@
             </div>
             <div class="form-group form-grid-full">
               <label>Logradouro <span class="required">*</span></label>
-              <input type="text" id="logradouro" name="logradouro" class="form-control" />
+              <input type="text" id="logradouro" name="logradouro" class="form-control" required />
             </div>
             <div class="form-group">
               <label>Número <span class="required">*</span></label>
-              <input type="text" id="numero" name="numero" class="form-control" />
+              <input type="text" id="numero" name="numero" class="form-control" required />
             </div>
             <div class="form-group">
               <label>Complemento</label>
@@ -276,7 +276,7 @@
             </div>
             <div class="form-group">
               <label>Bairro <span class="required">*</span></label>
-              <select id="bairro" name="bairro" class="form-control">
+              <select id="bairro" name="bairro" class="form-control" required>
                 <option value="">Selecione...</option>
                 <option value="Jacarezinho">Jacarezinho</option>
                 <option value="Mare">Maré</option>
@@ -284,8 +284,8 @@
               </select>
             </div>
             <div class="form-group">
-              <label>CEP</label>
-              <input type="text" id="cep" name="cep" class="form-control" maxlength="9" />
+              <label>CEP <span class="required">*</span></label>
+              <input type="text" id="cep" name="cep" class="form-control" maxlength="9" required />
             </div>
           </div>
         </section>
@@ -297,13 +297,13 @@
             <div class="form-group">
               <label>Telefone <span class="required">*</span></label>
               <div style="display: flex; gap: 10px;">
-                <input type="text" id="ddd" name="ddd" class="form-control" style="width: 60px;" value="21" maxlength="2" />
-                <input type="text" id="telefone" name="telefone" class="form-control" placeholder="999999999" maxlength="9" />
+                <input type="text" id="ddd" name="ddd" class="form-control" style="width: 60px;" value="21" maxlength="2" required />
+                <input type="text" id="telefone" name="telefone" class="form-control" placeholder="999999999" maxlength="9" required />
               </div>
             </div>
             <div class="form-group">
               <label>E-mail <span class="required">*</span></label>
-              <input type="email" id="email" name="email" class="form-control" />
+              <input type="email" id="email" name="email" class="form-control" required />
             </div>
           </div>
         </section>
@@ -352,7 +352,7 @@
   </div>
 
   <script>
-    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbwk_UNwCcncFqI6P8TLKO2m68wvujl_DXRnCt4i3n-kdHV_qh7FlOBDQc4mL6qbiYDq/exec';
+    const WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbzPHmyvee3Vnz_e72ciLheJx2uwTjB9RF62AHpGiWhkSBC2CaPbdWNN2k1PEZBluX3A/exec';
 
     // Alternar PF/PJ
     document.getElementById('btnPF').onclick = () => {
@@ -382,26 +382,26 @@
           alerta.textContent = 'Encontrado!'; alerta.className = 'alert-busca success';
           const d = r.dados;
           if (tipo === 'pf') {
-            document.getElementById('nomePF').value = d.nome || '';
+            document.getElementById('nomePF').value = d.nomeCompleto || '';
             document.getElementById('sexo').value = d.sexo || '';
             document.getElementById('nascimentoPF').value = d.nascimento || '';
             document.getElementById('ocupacao').value = d.ocupacao || '';
             document.getElementById('bolsaFamilia').value = d.bolsaFamilia || 'Não';
           } else {
-            document.getElementById('razaoSocial').value = d.razaoSocial || d.nome || '';
-            document.getElementById('dataFundacao').value = d.dataFundacao || '';
+            document.getElementById('razaoSocial').value = d.razaoSocial || '';
+            document.getElementById('dataFundacao').value = d.dataDeFundacao || '';
             document.getElementById('classificacao').value = d.classificacao || '';
             document.getElementById('cnae').value = d.cnae || '';
-            document.getElementById('cpfContato').value = d.cpfContato || '';
-            document.getElementById('nomeContato').value = d.nomeContato || '';
-            document.getElementById('cargoContato').value = d.cargoContato || '';
-            document.getElementById('nascimentoContato').value = d.nascimentoContato || '';
-            document.getElementById('sexoContato').value = d.sexoContato || '';
+            document.getElementById('cpfContato').value = d.cpfDoContato || '';
+            document.getElementById('nomeContato').value = d.nomeDoContato || '';
+            document.getElementById('cargoContato').value = d.cargoDoContato || '';
+            document.getElementById('nascimentoContato').value = d.nascimentoDoContato || '';
+            document.getElementById('sexoContato').value = d.sexoDoContato || '';
           }
           document.getElementById('tipoLogradouro').value = d.tipoLogradouro || 'Rua';
           document.getElementById('logradouro').value = d.logradouro || '';
           document.getElementById('numero').value = d.numero || '';
-          document.getElementById('complementoEndereco').value = d.complementoEndereco || '';
+          document.getElementById('complementoEndereco').value = d.complemento || '';
           document.getElementById('bairro').value = d.bairro || '';
           document.getElementById('cep').value = d.cep || '';
           document.getElementById('ddd').value = d.ddd || '21';
@@ -432,9 +432,18 @@
       
       // Ajuste de nomes para bater com o Script
       if (data.tipoPessoa === 'pf') {
-        data.nome = data.nomePF;
+        data.nomeCompleto = data.nomePF;
         data.nascimento = data.nascimentoPF;
+      } else { // PJ
+        data.razaoSocial = data.razaoSocial;
+        data.dataDeFundacao = data.dataFundacao;
+        data.cpfDoContato = data.cpfContato;
+        data.nomeDoContato = data.nomeContato;
+        data.cargoDoContato = data.cargoContato;
+        data.nascimentoDoContato = data.nascimentoContato;
+        data.sexoDoContato = data.sexoContato;
       }
+      data.complemento = data.complementoEndereco;
 
       const form = document.createElement('form');
       form.method = 'POST'; form.action = WEBAPP_URL; form.style.display = 'none';
